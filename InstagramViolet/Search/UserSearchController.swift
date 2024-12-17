@@ -30,6 +30,7 @@ class UserSearchController: UICollectionViewController, UICollectionViewDelegate
         self.collectionView.register(UserSearchCell.self, forCellWithReuseIdentifier: UserSearchCell.cellId)
         searchBar.searchTextField.addTarget(self, action: #selector(handleSearchBar), for: .editingChanged)
         fetchUsers()
+        collectionView.alwaysBounceVertical = true
     }
 
     private func fetchUsers() {
@@ -82,11 +83,10 @@ class UserSearchController: UICollectionViewController, UICollectionViewDelegate
     @objc func handleSearchBar() {
         guard let text = searchBar.text else { return }
         usersSearch = [User]()
-        for user in users {
-            if user.username.lowercased().contains(text.lowercased()) {
-                usersSearch.append(user)
-            }
-        }
+        
+        usersSearch = users.filter({ user in
+            user.username.lowercased().contains(text.lowercased())
+        })
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }
