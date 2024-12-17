@@ -14,6 +14,7 @@ class UserSearchController: UICollectionViewController, UICollectionViewDelegate
     var users = [User]()
     var usersSearch = [User]()
     
+    
     let searchBar: UISearchBar = {
         let sb = UISearchBar()
         sb.placeholder = "Enter username"
