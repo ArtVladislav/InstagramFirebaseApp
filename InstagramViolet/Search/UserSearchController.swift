@@ -12,9 +12,12 @@ import FirebaseDatabase
 class UserSearchController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
     var users = [User]()
+    var usersSearch = [User]()
+    
     let searchBar: UISearchBar = {
         let sb = UISearchBar()
         sb.placeholder = "Enter username"
+        sb.autocapitalizationType = .none
         return sb
     }()
     
@@ -54,13 +57,16 @@ class UserSearchController: UICollectionViewController, UICollectionViewDelegate
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
-        return users.count
+        let count: Int
+        (usersSearch.isEmpty && searchBar.text == "") ? (count = users.count) : (count = usersSearch.count)
+        return count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: UserSearchCell.cellId, for: indexPath) as! UserSearchCell
-        cell.configure(user: users[indexPath.item])
+        let array: [User]
+        (usersSearch.isEmpty && searchBar.text == "") ? (array = users) : (array = usersSearch)
+        cell.configure(user: array[indexPath.item])
         return cell
     }
     
@@ -73,7 +79,16 @@ class UserSearchController: UICollectionViewController, UICollectionViewDelegate
     }
 
     @objc func handleSearchBar() {
-        
+        guard let text = searchBar.text else { return }
+        usersSearch = [User]()
+        for user in users {
+            if user.username.lowercased().contains(text.lowercased()) {
+                usersSearch.append(user)
+            }
+        }
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
     }
 
     
