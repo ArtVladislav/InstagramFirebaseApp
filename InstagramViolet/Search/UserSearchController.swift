@@ -12,10 +12,19 @@ import FirebaseDatabase
 class UserSearchController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
     var users = [User]()
+    let searchBar: UISearchBar = {
+        let sb = UISearchBar()
+        sb.placeholder = "Enter username"
+        return sb
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let navBar = navigationController?.navigationBar
+        navBar?.addSubview(searchBar)
+        searchBar.anchor(top: navBar?.topAnchor, leading: navBar?.leadingAnchor, trailing: navBar?.trailingAnchor, bottom: navBar?.bottomAnchor, paddingTop: 0, paddingLeading: 8, paddingTrailing: -8, paddingBottom: 0, width: 0, height: 0)
         self.collectionView.register(UserSearchCell.self, forCellWithReuseIdentifier: UserSearchCell.cellId)
+        searchBar.searchTextField.addTarget(self, action: #selector(handleSearchBar), for: .editingChanged)
         fetchUsers()
     }
 
@@ -63,7 +72,9 @@ class UserSearchController: UICollectionViewController, UICollectionViewDelegate
         return 1
     }
 
-    // MARK: UICollectionViewDelegate
+    @objc func handleSearchBar() {
+        
+    }
 
     
 
