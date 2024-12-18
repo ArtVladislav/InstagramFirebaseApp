@@ -18,6 +18,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         self.collectionView.register(HomePostCell.self, forCellWithReuseIdentifier: HomePostCell.cellId)
         setupNavigationItem()
         fetchOrderedPost()
+        fetchPostsOtherUsers()
         
     }
 
@@ -26,6 +27,21 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     // MARK: - Navigation
+    private func fetchPostsOtherUsers() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        Database.database().reference().child("following").child(uid).observeSingleEvent(of: .value) { snapshot in
+            guard let followingDictionary = snapshot.value as? [String: Any] else { return }
+            followingDictionary.forEach { key, value in
+                Database.fetchUserWithUid(uid: key) { user in
+                    self.fetchPostsWithUser(user: user)
+                }
+            }
+        } withCancel: { err in
+            print( "Failed to fetch posts other users: \(err)")
+        }
+
+    }
+    
     private func fetchOrderedPost() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         Database.fetchUserWithUid(uid: uid) { user in
@@ -39,6 +55,11 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
             guard let dictionary = snapshot.value as? [String: Any] else { return }
             let post = Post(user: user, dictionary: dictionary)
             self.posts.insert(post, at: 0)
+            
+            self.posts.sort { (p1,p2) -> Bool in
+                return p1.creationDate.compare(p2.creationDate) == .orderedDescending
+            }
+            
             self.collectionView.reloadData()
         } withCancel: { err in
             print("Filed to fetch posts: \(err)")

@@ -80,10 +80,11 @@ final class HomePostCell: UICollectionViewCell {
         usernameLabel.text = post.user.username
         userProfileImageView.loadImage(urlString: post.user.profileImageUrl)
         
+        let timeAgoDisplay = post.creationDate.timeAgoDisplay()
         let attributedText = NSMutableAttributedString(string: post.user.username + " ", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 14)])
         let postsText = NSMutableAttributedString(string: post.caption, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)])
         let spaceText = NSMutableAttributedString(string: "\n\n", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 4)])
-        let dataText = NSMutableAttributedString(string: "3 week ago", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+        let dataText = NSMutableAttributedString(string: timeAgoDisplay, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.lightGray])
         attributedText.append(postsText)
         attributedText.append(spaceText)
         attributedText.append(dataText)
