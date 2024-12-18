@@ -9,16 +9,16 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 
-class UserSearchController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class UserSearchController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UISearchBarDelegate {
 
     var users = [User]()
     var usersSearch = [User]()
     
-    
-    let searchBar: UISearchBar = {
+    lazy var searchBar: UISearchBar = {
         let sb = UISearchBar()
         sb.placeholder = "Enter username"
         sb.autocapitalizationType = .none
+        sb.delegate = self
         return sb
     }()
     
@@ -28,17 +28,31 @@ class UserSearchController: UICollectionViewController, UICollectionViewDelegate
         navBar?.addSubview(searchBar)
         searchBar.anchor(top: navBar?.topAnchor, leading: navBar?.leadingAnchor, trailing: navBar?.trailingAnchor, bottom: navBar?.bottomAnchor, paddingTop: 0, paddingLeading: 8, paddingTrailing: -8, paddingBottom: 0, width: 0, height: 0)
         self.collectionView.register(UserSearchCell.self, forCellWithReuseIdentifier: UserSearchCell.cellId)
-        searchBar.searchTextField.addTarget(self, action: #selector(handleSearchBar), for: .editingChanged)
+        collectionView.keyboardDismissMode = .onDrag
         fetchUsers()
-        collectionView.alwaysBounceVertical = true
     }
 
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        usersSearch = [User]()
+        usersSearch = users.filter({ user in
+            user.username.lowercased().contains(searchText.lowercased())
+        })
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
+    }
+    
     private func fetchUsers() {
+        let myKey = Auth.auth().currentUser?.uid
         Database.database().reference().child("users").observeSingleEvent(of: .value) { snapshot in
             guard let usersDictionary = snapshot.value as? [String: [String : Any]] else { return }
             usersDictionary.forEach { (key, value) in
+                if myKey == key { return }
                 let user = User(uid: key, dictionary: value)
                 self.users.append(user)
+            }
+            self.users.sort { u1, u2 in
+                u1.username.compare(u2.username) == .orderedAscending
             }
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
@@ -52,23 +66,34 @@ class UserSearchController: UICollectionViewController, UICollectionViewDelegate
     // MARK: - Navigation
 
     // MARK: UICollectionViewDataSource
-
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        searchBar.isHidden = true
+        searchBar.resignFirstResponder()
+        let user = usersSearch[indexPath.item]
+        let userProfileController = UserProfileController(collectionViewLayout: UICollectionViewFlowLayout())
+        userProfileController.user = user
+        self.show(userProfileController, sender: nil)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        searchBar.isHidden = false
+    }
+    
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let count: Int
-        (usersSearch.isEmpty && searchBar.text == "") ? (count = users.count) : (count = usersSearch.count)
-        return count
+        if usersSearch.isEmpty && searchBar.text == "" { usersSearch = users }
+        return usersSearch.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: UserSearchCell.cellId, for: indexPath) as! UserSearchCell
-        let array: [User]
-        (usersSearch.isEmpty && searchBar.text == "") ? (array = users) : (array = usersSearch)
-        cell.configure(user: array[indexPath.item])
+        if usersSearch.isEmpty && searchBar.text == "" { usersSearch = users }
+        cell.configure(user: usersSearch[indexPath.item])
         return cell
     }
     
@@ -79,19 +104,4 @@ class UserSearchController: UICollectionViewController, UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 1
     }
-
-    @objc func handleSearchBar() {
-        guard let text = searchBar.text else { return }
-        usersSearch = [User]()
-        
-        usersSearch = users.filter({ user in
-            user.username.lowercased().contains(text.lowercased())
-        })
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-        }
-    }
-
-    
-
 }
