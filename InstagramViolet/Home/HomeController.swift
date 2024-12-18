@@ -15,11 +15,16 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.collectionView.register(HomePostCell.self, forCellWithReuseIdentifier: HomePostCell.cellId)
-        setupNavigationItem()
-        fetchOrderedPost()
-        fetchPostsOtherUsers()
+        NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateFeed), name: SharePhotoController.updateFeedNotificationName, object: nil)
         
+        self.collectionView.register(HomePostCell.self, forCellWithReuseIdentifier: HomePostCell.cellId)
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+        collectionView.refreshControl = refreshControl
+        
+        setupNavigationItem()
+        fetchAllPosts()
     }
 
     private func setupNavigationItem() {
@@ -27,9 +32,15 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     }
     
     // MARK: - Navigation
+    private func fetchAllPosts() {
+        fetchOrderedPost()
+        fetchPostsOtherUsers()
+    }
+    
     private func fetchPostsOtherUsers() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         Database.database().reference().child("following").child(uid).observeSingleEvent(of: .value) { snapshot in
+            self.collectionView.refreshControl?.endRefreshing()
             guard let followingDictionary = snapshot.value as? [String: Any] else { return }
             followingDictionary.forEach { key, value in
                 Database.fetchUserWithUid(uid: key) { user in
@@ -39,7 +50,6 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         } withCancel: { err in
             print( "Failed to fetch posts other users: \(err)")
         }
-
     }
     
     private func fetchOrderedPost() {
@@ -49,24 +59,40 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
     }
     
+//    private func fetchPostsWithUser(user: User) {
+//        let ref = Database.database().reference().child("posts").child(user.uid)
+//        ref.observe(.childAdded) { snapshot in
+//            guard let dictionary = snapshot.value as? [String: Any] else { return }
+//            let post = Post(user: user, dictionary: dictionary)
+//            self.posts.insert(post, at: 0)
+//            
+//            self.posts.sort { (p1,p2) -> Bool in
+//                return p1.creationDate.compare(p2.creationDate) == .orderedDescending
+//            }
+//            
+//            self.collectionView.reloadData()
+//        } withCancel: { err in
+//            print("Filed to fetch posts: \(err)")
+//        }
+//    }
+    
     private func fetchPostsWithUser(user: User) {
         let ref = Database.database().reference().child("posts").child(user.uid)
-        ref.queryOrdered(byChild: "creationDate").observe(.childAdded) { snapshot in
-            guard let dictionary = snapshot.value as? [String: Any] else { return }
-            let post = Post(user: user, dictionary: dictionary)
-            self.posts.insert(post, at: 0)
-            
+        ref.observeSingleEvent(of: .value, with: { snapshot in
+            guard let dictionary = snapshot.value as? [String: [String: Any]] else { return }
+            dictionary.forEach { key, value in
+                let post = Post(user: user, dictionary: value)
+                self.posts.insert(post, at: 0)
+            }
             self.posts.sort { (p1,p2) -> Bool in
                 return p1.creationDate.compare(p2.creationDate) == .orderedDescending
             }
-            
             self.collectionView.reloadData()
-        } withCancel: { err in
+        }, withCancel: { err in
             print("Filed to fetch posts: \(err)")
-        }
+        })
     }
-   
-
+    
     // MARK: UICollectionViewDataSource
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -96,6 +122,14 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         return CGSize(width: width, height: width + 186)
     }
     
+    @objc func handleRefresh() {
+        posts.removeAll()
+        fetchAllPosts()
+    }
+    
+    @objc func handleUpdateFeed() {
+        handleRefresh()
+    }
     
     // MARK: UICollectionViewDelegate
 

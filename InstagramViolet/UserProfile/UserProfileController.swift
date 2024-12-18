@@ -76,7 +76,6 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: UserProfileHeader.cellId, for: indexPath ) as! UserProfileHeader
-//        header.user = self.user
         guard let user = self.user else { return header }
         header.configure(user: user, countPosts: posts.count)
         return header
