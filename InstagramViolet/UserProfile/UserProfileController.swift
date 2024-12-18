@@ -17,15 +17,24 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.backgroundColor = .white
-        fetchUser()
-        collectionView?.register(UserProfileHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: UserProfileHeader.cellId)
+        collectionView.register(UserProfileHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: UserProfileHeader.cellId)
         collectionView.register(UserProfilePhotoCell.self, forCellWithReuseIdentifier: UserProfilePhotoCell.cellId)
+        fetchUser()
         setupLogOutButton()
-        fetchOrderedPost()
+    }
+    
+    private func fetchUser() {
+        let uid = user?.uid ?? Auth.auth().currentUser?.uid ?? ""
+        Database.fetchUserWithUid(uid: uid) { user in
+            self.user = user
+            self.navigationItem.title = self.user?.username
+            self.collectionView.reloadData()
+            self.fetchOrderedPost()
+        }
     }
     
     private func fetchOrderedPost() {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
+        guard let uid = self.user?.uid else { return }
         Database.fetchUserWithUid(uid: uid) { user in
             let ref = Database.database().reference().child("posts").child(uid)
             ref.queryOrdered(byChild: "creationDate").observe(.childAdded) { snapshot in
@@ -75,15 +84,6 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         
         return CGSize(width: view.frame.width, height: 200)
-    }
-    
-    private func fetchUser() {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        Database.fetchUserWithUid(uid: uid) { user in
-            self.user = user
-            self.navigationItem.title = self.user?.username
-            self.collectionView.reloadData()
-        }
     }
     
     @objc func handleLogOut() {
