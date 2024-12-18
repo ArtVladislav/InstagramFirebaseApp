@@ -136,10 +136,11 @@ class UserProfileHeader: UICollectionViewCell {
     
     private func setupEditProfileButton() {
         guard let currentUserId = Auth.auth().currentUser?.uid else { return }
-        if currentUserId == self.user?.uid {
+        guard let userId = self.user?.uid else { return }
+        if currentUserId == userId {
             editProfileOrFollowButton.setTitle("Edit Profile", for: .normal)
         } else {
-            Database.database().reference().child("following").child(currentUserId).observeSingleEvent(of: .value) { snapshot in
+            Database.database().reference().child("following").child(currentUserId).child(userId).observeSingleEvent(of: .value) { snapshot in
                 if let isFollowing = snapshot.value as? Int, isFollowing == 1 {
                     self.setupTitleUnfollow()
                 } else {
