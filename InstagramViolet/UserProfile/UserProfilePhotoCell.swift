@@ -28,6 +28,9 @@ class UserProfilePhotoCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        layer.cornerRadius = 20
+        clipsToBounds = true
+        
         addSubview(photoImageView)
         photoImageView.anchor(top: topAnchor, leading: leadingAnchor, trailing: trailingAnchor, bottom: bottomAnchor, paddingTop: 0, paddingLeading: 0, paddingTrailing: 0, paddingBottom: 0, width: 0, height: 0)
     }
