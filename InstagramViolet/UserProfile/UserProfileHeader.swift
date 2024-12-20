@@ -13,14 +13,6 @@ class UserProfileHeader: UICollectionViewCell {
     
     static let cellId = "UserProfileHeader"
     var user: User?
-//    var user: User? {
-//        didSet {
-//            guard let userProfileImageUrl = user?.profileImageUrl else { return }
-//            profileImageView.loadImage(urlString: userProfileImageUrl)
-//            usernameLabel.text = user?.username
-//            setupEditProfileButton()
-//        }
-//    }
     
     let profileImageView: CustomImageView = {
         let imageView = CustomImageView()
@@ -91,7 +83,7 @@ class UserProfileHeader: UICollectionViewCell {
     let editProfileOrFollowButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Edit Profile", for: .normal)
-        button.setTitleColor(.black, for: .normal)
+        button.setTitleColor(.themeTextDark, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 3
@@ -102,7 +94,7 @@ class UserProfileHeader: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+        backgroundColor = .themeDark
         addSubviews(profileImageView, usernameLabel, editProfileOrFollowButton)
         
         setupBottomToolbar()
@@ -179,14 +171,14 @@ class UserProfileHeader: UICollectionViewCell {
     private func setupTitleFollow() {
         self.editProfileOrFollowButton.setTitle("Follow", for: .normal)
         self.editProfileOrFollowButton.backgroundColor = UIColor.rgb(red: 17, green: 154, blue: 237)
-        self.editProfileOrFollowButton.setTitleColor(.white, for: .normal)
+        self.editProfileOrFollowButton.setTitleColor(.themeTextDark, for: .normal)
         self.editProfileOrFollowButton.layer.borderColor = UIColor(white: 0, alpha: 0.2).cgColor
     }
     private func setupTitleUnfollow() {
-        self.editProfileOrFollowButton.backgroundColor = .white
+        self.editProfileOrFollowButton.backgroundColor = .themeDark
         self.editProfileOrFollowButton.setTitle("Unfollow", for: .normal)
-        self.editProfileOrFollowButton.setTitleColor(.black, for: .normal)
-        self.editProfileOrFollowButton.layer.borderColor = UIColor(white: 0, alpha: 0.2).cgColor
+        self.editProfileOrFollowButton.setTitleColor(.themeTextDark, for: .normal)
+        self.editProfileOrFollowButton.layer.borderColor = UIColor.themeDark.cgColor
     }
     
     @objc func handleEditProfileOrFollow() {
