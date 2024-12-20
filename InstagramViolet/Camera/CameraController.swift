@@ -73,9 +73,11 @@ class CameraController: UIViewController, AVCapturePhotoCaptureDelegate {
         
         guard let imageData = photo.fileDataRepresentation() else { return }
         let previewImage = UIImage(data: imageData)
-        let previewImageView = UIImageView(image: previewImage)
-        view.addSubview(previewImageView)
-        previewImageView.anchor(top: view.topAnchor, leading: view.leadingAnchor, trailing: view.trailingAnchor, bottom: view.bottomAnchor, paddingTop: 0, paddingLeading: 0, paddingTrailing: 0, paddingBottom: 0, width: 0, height: 0)
+        
+        let containerView = PreviewPhotoContainerView()
+        containerView.previewImageView.image = previewImage
+        view.addSubview(containerView)
+        containerView.anchor(top: view.topAnchor, leading: view.leadingAnchor, trailing: view.trailingAnchor, bottom: view.bottomAnchor, paddingTop: 0, paddingLeading: 0, paddingTrailing: 0, paddingBottom: 0, width: 0, height: 0)
     }
     
     @objc func handleDismiss() {
