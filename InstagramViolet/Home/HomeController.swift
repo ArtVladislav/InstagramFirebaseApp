@@ -109,6 +109,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomePostCell.cellId, for: indexPath) as! HomePostCell
+        cell.backgroundColor = .darkTheme
         if (indexPath.item <= posts.count) {
             cell.configure(post: posts[indexPath.item])
         }

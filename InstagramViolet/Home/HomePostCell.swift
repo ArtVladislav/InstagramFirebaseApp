@@ -30,6 +30,7 @@ final class HomePostCell: UICollectionViewCell {
         let label = UILabel()
         label.text = "Username"
         label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.textColor = .themeTextDark
         return label
     }()
     
@@ -71,7 +72,7 @@ final class HomePostCell: UICollectionViewCell {
     let captionLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.textColor = .black
+        label.textColor = .themeTextDark
         return label
     }()
     
@@ -82,7 +83,7 @@ final class HomePostCell: UICollectionViewCell {
         
         let timeAgoDisplay = post.creationDate.timeAgoDisplay()
         let attributedText = NSMutableAttributedString(string: post.user.username + " ", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 14)])
-        let postsText = NSMutableAttributedString(string: post.caption, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)])
+        let postsText = NSMutableAttributedString(string: post.caption, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.themeTextDark])
         let spaceText = NSMutableAttributedString(string: "\n\n", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 4)])
         let dataText = NSMutableAttributedString(string: timeAgoDisplay, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.lightGray])
         attributedText.append(postsText)

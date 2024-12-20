@@ -22,7 +22,7 @@ final class UserSearchCell: UICollectionViewCell {
     private let usernameLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 14)
-        label.textColor = .black
+        label.textColor = .darkTextTheme
         label.numberOfLines = 0
         label.text = "Username"
         return label
@@ -30,12 +30,12 @@ final class UserSearchCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        let bottomDividerView = UIView()
-        bottomDividerView.backgroundColor = .lightGray
-        addSubviews(photoImageView, usernameLabel, bottomDividerView)
+        backgroundColor = .darkTheme
+        layer.cornerRadius = 30
+        clipsToBounds = true
+        addSubviews(photoImageView, usernameLabel)
         photoImageView.anchor(top: topAnchor, leading: leadingAnchor, trailing: nil, bottom: bottomAnchor, paddingTop: 10, paddingLeading: 10, paddingTrailing: 0, paddingBottom: -10, width: 60, height: 60)
         usernameLabel.anchor(top: topAnchor, leading: photoImageView.trailingAnchor, trailing: trailingAnchor, bottom: bottomAnchor, paddingTop: 10, paddingLeading: 10, paddingTrailing: -10, paddingBottom: -10, width: 0, height: 0)
-        bottomDividerView.anchor(top: nil, leading: photoImageView.trailingAnchor, trailing: trailingAnchor, bottom: bottomAnchor, paddingTop: 0, paddingLeading: 0, paddingTrailing: 0, paddingBottom: 0, width: 0, height: 0.5)
     }
     
     required init?(coder: NSCoder) {
