@@ -87,7 +87,7 @@ class UserProfileHeader: UICollectionViewCell {
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 3
-        button.layer.borderColor = UIColor.lightGray.cgColor
+        button.layer.borderColor = UIColor.darkGray.cgColor
         return button
     }()
     

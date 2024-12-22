@@ -105,6 +105,7 @@ final class HomePostCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = .darkTheme
         addSubviews(userProfileImageView,
                     usernameLabel,
                     optionsButton,

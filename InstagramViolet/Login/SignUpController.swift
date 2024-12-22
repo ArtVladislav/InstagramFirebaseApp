@@ -38,18 +38,21 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     let emailTextField: CustomTextField = {
         let textField = CustomTextField()
         textField.placeholder = "Email"
+        textField.textColor = .darkTextTheme
         return textField
     }()
     
     let userNameTextField: CustomTextField = {
         let textField = CustomTextField()
         textField.placeholder = "User Name"
+        textField.textColor = .darkTextTheme
         return textField
     }()
     
     let passwordTextField: CustomTextField = {
         let textField = CustomTextField()
         textField.placeholder = "Password"
+        textField.textColor = .darkTextTheme
         return textField
     }()
     
@@ -66,7 +69,7 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     }
     
     private func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = .darkTheme
         setupButton()
         setupTarget()
     }

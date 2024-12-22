@@ -13,12 +13,14 @@ class LoginController: UIViewController {
     let emailTextField: CustomTextField = {
         let textField = CustomTextField()
         textField.placeholder = "Email"
+        textField.textColor = .darkTextTheme
         return textField
     }()
     
     let passwordTextField: CustomTextField = {
         let textField = CustomTextField()
         textField.placeholder = "Password"
+        textField.textColor = .darkTextTheme
         return textField
     }()
     
@@ -57,7 +59,7 @@ class LoginController: UIViewController {
     }
 
     private func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = .darkTheme
         view.addSubviews(signUpButton, instagramLogo)
         
         signUpButton.anchor(top: nil, leading: view.leadingAnchor, trailing: view.trailingAnchor, bottom: view.bottomAnchor, paddingTop: 0, paddingLeading: 0, paddingTrailing: 0, paddingBottom: -16, width: 0, height: 50)
