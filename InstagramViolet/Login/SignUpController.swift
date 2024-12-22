@@ -26,7 +26,7 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         let button = UIButton()
         button.setTitle("Add Photo", for: .normal)
         button.setTitleColor(.systemBlue, for: .normal)
-        button.backgroundColor = .white
+        button.backgroundColor = .customThemeDark
         button.layer.cornerRadius = .spacing64
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.systemBlue.cgColor
@@ -38,21 +38,21 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     let emailTextField: CustomTextField = {
         let textField = CustomTextField()
         textField.placeholder = "Email"
-        textField.textColor = .darkTextTheme
+        textField.textColor = .customThemeDarkText
         return textField
     }()
     
     let userNameTextField: CustomTextField = {
         let textField = CustomTextField()
         textField.placeholder = "User Name"
-        textField.textColor = .darkTextTheme
+        textField.textColor = .customThemeDarkText
         return textField
     }()
     
     let passwordTextField: CustomTextField = {
         let textField = CustomTextField()
         textField.placeholder = "Password"
-        textField.textColor = .darkTextTheme
+        textField.textColor = .customThemeDarkText
         return textField
     }()
     
@@ -69,7 +69,7 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     }
     
     private func setupUI() {
-        view.backgroundColor = .darkTheme
+        view.backgroundColor = .customThemeDark
         setupButton()
         setupTarget()
     }

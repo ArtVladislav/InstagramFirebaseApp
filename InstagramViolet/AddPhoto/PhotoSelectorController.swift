@@ -33,7 +33,7 @@ class PhotoSelectorController: UICollectionViewController, UICollectionViewDeleg
     
     private func assetsFetchOptions() -> PHFetchOptions {
         let fetchOptions = PHFetchOptions()
-        fetchOptions.fetchLimit = 10
+        fetchOptions.fetchLimit = 30
         let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: false)
         fetchOptions.sortDescriptors = [sortDescriptor]
         return fetchOptions
@@ -75,7 +75,9 @@ class PhotoSelectorController: UICollectionViewController, UICollectionViewDeleg
     private func setupNavigationButtons() {
         navigationController?.navigationBar.tintColor = .black
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(handleCancel))
+        navigationItem.leftBarButtonItem?.tintColor = UIColor.customThemeDarkText
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(handleNext))
+        navigationItem.rightBarButtonItem?.tintColor = UIColor.customThemeDarkText
     }
     
     @objc func handleNext() {

@@ -21,8 +21,9 @@ class SharePhotoController: UIViewController {
     
     let imageView: UIImageView = {
         let iv = UIImageView()
-        iv.backgroundColor = .cyan
+        iv.backgroundColor = .customThemeDark
         iv.contentMode = .scaleAspectFill
+        iv.layer.cornerRadius = 20
         iv.clipsToBounds = true
         return iv
     }()
@@ -30,28 +31,32 @@ class SharePhotoController: UIViewController {
     let textView: UITextView = {
         let tv = UITextView()
         tv.font = UIFont.systemFont(ofSize: 14)
+        tv.layer.cornerRadius = 20
+        tv.clipsToBounds = true
+        tv.backgroundColor = .customThemeDark
+        tv.textColor = .customThemeDarkText
         return tv
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .rgb(red: 240, green: 240, blue: 240)
+        view.backgroundColor = .customThemeDark
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Share", style: .plain, target: self, action: #selector(handleShare))
-        
+        navigationController?.navigationBar.tintColor = UIColor.customThemeDarkText
         setupImageAndText()
     }
     
     private func setupImageAndText() {
         let containerView = UIView()
-        containerView.backgroundColor = .white
         view.addSubview(containerView)
+        containerView.backgroundColor = .customThemeDark
         containerView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, trailing: view.trailingAnchor, bottom: nil, paddingTop: 0, paddingLeading: 0, paddingTrailing: 0, paddingBottom: 0, width: 0, height: 100)
         
         containerView.addSubview(imageView)
-        imageView.anchor(top: containerView.topAnchor, leading: containerView.leadingAnchor, trailing: nil, bottom: containerView.bottomAnchor, paddingTop: 8, paddingLeading: 8, paddingTrailing: 0, paddingBottom: -8, width: 84, height: 0)
+        imageView.anchor(top: containerView.topAnchor, leading: containerView.leadingAnchor, trailing: nil, bottom: containerView.bottomAnchor, paddingTop: 0, paddingLeading: 0, paddingTrailing: 0, paddingBottom: 0, width: 100, height: 0)
         
         containerView.addSubview(textView)
-        textView.anchor(top: containerView.topAnchor, leading: imageView.trailingAnchor, trailing: containerView.trailingAnchor, bottom: containerView.bottomAnchor, paddingTop: 0, paddingLeading: 4, paddingTrailing: 0, paddingBottom: 0, width: 0, height: 0)
+        textView.anchor(top: containerView.topAnchor, leading: imageView.trailingAnchor, trailing: containerView.trailingAnchor, bottom: containerView.bottomAnchor, paddingTop: 0, paddingLeading: 0, paddingTrailing: 0, paddingBottom: 0, width: 0, height: 0)
     }
     
     private func saveToDatabaseWithImageUrl(imageUrl: String) {

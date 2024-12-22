@@ -16,7 +16,9 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        collectionView.backgroundColor = .darkTheme
+        
+        collectionView.backgroundColor = .customThemeDark
+        navigationController?.navigationBar.tintColor = .customThemeDarkText
         collectionView.register(UserProfileHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: UserProfileHeader.cellId)
         collectionView.register(UserProfilePhotoCell.self, forCellWithReuseIdentifier: UserProfilePhotoCell.cellId)
         fetchUser()

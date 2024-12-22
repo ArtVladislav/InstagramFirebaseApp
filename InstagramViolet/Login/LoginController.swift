@@ -13,14 +13,14 @@ class LoginController: UIViewController {
     let emailTextField: CustomTextField = {
         let textField = CustomTextField()
         textField.placeholder = "Email"
-        textField.textColor = .darkTextTheme
+        textField.textColor = .customThemeDarkText
         return textField
     }()
     
     let passwordTextField: CustomTextField = {
         let textField = CustomTextField()
         textField.placeholder = "Password"
-        textField.textColor = .darkTextTheme
+        textField.textColor = .customThemeDarkText
         return textField
     }()
     
@@ -53,13 +53,16 @@ class LoginController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGesture)
+        signInButton.addGestureRecognizer(tapGesture)
         setupUI()
         setupInputFields()
         setupTarget()
     }
 
     private func setupUI() {
-        view.backgroundColor = .darkTheme
+        view.backgroundColor = .customThemeDark
         view.addSubviews(signUpButton, instagramLogo)
         
         signUpButton.anchor(top: nil, leading: view.leadingAnchor, trailing: view.trailingAnchor, bottom: view.bottomAnchor, paddingTop: 0, paddingLeading: 0, paddingTrailing: 0, paddingBottom: -16, width: 0, height: 50)
@@ -71,7 +74,6 @@ class LoginController: UIViewController {
         stackView.distribution = .fillEqually
         stackView.axis = .vertical
         stackView.spacing = .spacing16
-        
         view.addSubview(stackView)
         
         stackView.anchor(top: instagramLogo.bottomAnchor, leading: view.leadingAnchor, trailing: view.trailingAnchor, bottom: nil, paddingTop: .spacing64, paddingLeading: .spacing40, paddingTrailing: -.spacing40, paddingBottom: 0, width: 0, height: 180)
@@ -117,6 +119,10 @@ class LoginController: UIViewController {
     @objc func handleShowSignUp() {
         let signUpController = SignUpController()
         navigationController?.pushViewController(signUpController, animated: true)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
 
 }
