@@ -22,22 +22,22 @@ class UserProfileHeader: UICollectionViewCell {
     
     let gridButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage.grid, for: .normal)
-        button.tintColor = UIColor(white: 0, alpha: 0.2)
+        button.setImage(UIImage.grid.withRenderingMode(.alwaysOriginal), for: .normal)
+//        button.tintColor = UIColor(white: 1, alpha: 0.5)
         return button
     }()
     
     let listButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage.list, for: .normal)
-        button.tintColor = UIColor(white: 0, alpha: 0.2)
+        button.setImage(UIImage.list.withRenderingMode(.alwaysOriginal), for: .normal)
+//        button.tintColor = UIColor(white: 0, alpha: 0.2)
         return button
     }()
     
     let bookmarkButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage.ribbon, for: .normal)
-        button.tintColor = UIColor(white: 0, alpha: 0.2)
+        button.setImage(UIImage.ribbon.withRenderingMode(.alwaysOriginal), for: .normal)
+//        button.tintColor = UIColor(white: 0, alpha: 0.2)
         return button
     }()
     
@@ -83,7 +83,7 @@ class UserProfileHeader: UICollectionViewCell {
     let editProfileOrFollowButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Edit Profile", for: .normal)
-        button.setTitleColor(.themeTextDark, for: .normal)
+        button.setTitleColor(.customThemeDarkText, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 3
@@ -94,7 +94,7 @@ class UserProfileHeader: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .themeDark
+        backgroundColor = .customThemeDark
         addSubviews(profileImageView, usernameLabel, editProfileOrFollowButton)
         
         setupBottomToolbar()
@@ -171,14 +171,14 @@ class UserProfileHeader: UICollectionViewCell {
     private func setupTitleFollow() {
         self.editProfileOrFollowButton.setTitle("Follow", for: .normal)
         self.editProfileOrFollowButton.backgroundColor = UIColor.rgb(red: 17, green: 154, blue: 237)
-        self.editProfileOrFollowButton.setTitleColor(.themeTextDark, for: .normal)
+        self.editProfileOrFollowButton.setTitleColor(.customThemeDarkText, for: .normal)
         self.editProfileOrFollowButton.layer.borderColor = UIColor(white: 0, alpha: 0.2).cgColor
     }
     private func setupTitleUnfollow() {
-        self.editProfileOrFollowButton.backgroundColor = .themeDark
+        self.editProfileOrFollowButton.backgroundColor = .customThemeDark
         self.editProfileOrFollowButton.setTitle("Unfollow", for: .normal)
-        self.editProfileOrFollowButton.setTitleColor(.themeTextDark, for: .normal)
-        self.editProfileOrFollowButton.layer.borderColor = UIColor.themeDark.cgColor
+        self.editProfileOrFollowButton.setTitleColor(.customThemeDarkText, for: .normal)
+        self.editProfileOrFollowButton.layer.borderColor = UIColor.lightGray.cgColor
     }
     
     @objc func handleEditProfileOrFollow() {

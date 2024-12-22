@@ -60,7 +60,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
         //user
         let userProfileNavController = templateNavController(unselected: UIImage.profileUnselected, selected: UIImage.profileSelected, rootViewController: UserProfileController(collectionViewLayout: UICollectionViewFlowLayout()))
         
-        tabBar.tintColor = .black
+        tabBar.tintColor = .customThemeDarkText
         viewControllers = [homeNavController,
                            searchNavController,
                            plusNavController,

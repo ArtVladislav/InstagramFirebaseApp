@@ -22,7 +22,7 @@ final class UserSearchCell: UICollectionViewCell {
     private let usernameLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 14)
-        label.textColor = .darkTextTheme
+        label.textColor = .customThemeDarkText
         label.numberOfLines = 0
         label.text = "Username"
         return label
@@ -30,7 +30,7 @@ final class UserSearchCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .darkTheme
+        backgroundColor = .customThemeDark
         layer.cornerRadius = 30
         clipsToBounds = true
         addSubviews(photoImageView, usernameLabel)
