@@ -53,9 +53,10 @@ class LoginController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
-        signInButton.addGestureRecognizer(tapGesture)
+        
         setupUI()
         setupInputFields()
         setupTarget()
