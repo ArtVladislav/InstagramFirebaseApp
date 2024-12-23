@@ -65,6 +65,9 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGesture)
         setupUI()
     }
     
@@ -166,6 +169,10 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
     
     @objc func handleShowSignUp() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
     
     @objc func handleSignUp() {
