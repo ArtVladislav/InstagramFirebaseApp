@@ -24,8 +24,8 @@ class UserSearchController: UICollectionViewController, UICollectionViewDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        collectionView.addGestureRecognizer(tapGesture)
+//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+//        view.addGestureRecognizer(tapGesture)
         
         let navBar = navigationController?.navigationBar
         navBar?.addSubview(searchBar)
