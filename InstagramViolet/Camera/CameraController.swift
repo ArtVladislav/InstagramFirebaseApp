@@ -8,9 +8,11 @@
 import UIKit
 import AVFoundation
 
-class CameraController: UIViewController, AVCapturePhotoCaptureDelegate {
+class CameraController: UIViewController, AVCapturePhotoCaptureDelegate, UIViewControllerTransitioningDelegate {
 
     let output = AVCapturePhotoOutput()
+    let customAnimationPresentor = CustomAnimationPresentor()
+    let customAnimationDismisser = CustomAnimationDismisser()
     
     let dismissButton: UIButton = {
         let button = UIButton()
@@ -27,14 +29,21 @@ class CameraController: UIViewController, AVCapturePhotoCaptureDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCaptureSession()
-        
+        transitioningDelegate = self
         view.addSubviews(capturePhotoButton, dismissButton)
         capturePhotoButton.addTarget(self, action: #selector(handleCapturePhoto), for: .touchUpInside)
         dismissButton.addTarget(self, action: #selector(handleDismiss), for: .touchUpInside)
-        dismissButton.anchor(top: view.topAnchor, leading: nil, trailing: view.trailingAnchor, bottom: nil, paddingTop: 70, paddingLeading: 0, paddingTrailing: -12, paddingBottom: 0, width: 50, height: 50)
+        dismissButton.anchor(top: view.topAnchor, leading: nil, trailing: view.trailingAnchor, bottom: nil, paddingTop: 80, paddingLeading: 0, paddingTrailing: -12, paddingBottom: 0, width: 50, height: 50)
         capturePhotoButton.anchor(top: nil, leading: nil, trailing: nil, bottom: view.bottomAnchor, paddingTop: 0, paddingLeading: 0, paddingTrailing: 0, paddingBottom: -100, width: 100, height: 100)
         capturePhotoButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        
+    }
+    
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
+        return customAnimationPresentor
+    }
+    
+    func animationController(forDismissed dismissed: UIViewController) -> (any UIViewControllerAnimatedTransitioning)? {
+        return customAnimationDismisser
     }
     
     private func setupCaptureSession() {
