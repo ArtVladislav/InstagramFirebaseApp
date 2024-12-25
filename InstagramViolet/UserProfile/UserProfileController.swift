@@ -13,11 +13,13 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
     
     var user: User?
     var posts = [Post]()
+    var following = 0
+    var followers = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        collectionView.backgroundColor = .customThemeDark
+        collectionView.backgroundColor = .customBlackWhite
         navigationController?.navigationBar.tintColor = .customThemeDarkText
         collectionView.register(UserProfileHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: UserProfileHeader.cellId)
         collectionView.register(UserProfilePhotoCell.self, forCellWithReuseIdentifier: UserProfilePhotoCell.cellId)
@@ -32,6 +34,7 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
             self.navigationItem.title = self.user?.username
             self.collectionView.reloadData()
             self.fetchOrderedPost()
+            self.fetchFollowing()
         }
     }
     
@@ -46,6 +49,21 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
                 self.collectionView.reloadData()
             }
         }
+    }
+    
+    private func fetchFollowing() {
+        guard let uid = self.user?.uid else { return }
+        Database.database().reference().child("following").child(uid).observeSingleEvent(of: .value) { snapshot in
+            guard let dictionary = snapshot.value as? [String: Any] else { return }
+            self.following = dictionary.count
+            print("following: \(self.following)")
+            
+            
+        } withCancel: { err in
+            print("Failed fetch followers: \(err)")
+        }
+
+        
     }
  
     private func setupLogOutButton() {
@@ -79,7 +97,7 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: UserProfileHeader.cellId, for: indexPath ) as! UserProfileHeader
         guard let user = self.user else { return header }
-        header.configure(user: user, countPosts: posts.count)
+        header.configure(user: user, postsCount: posts.count, followersCount: followers, followingCount: following)
         return header
     }
     
