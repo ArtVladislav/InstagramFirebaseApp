@@ -49,10 +49,7 @@ class UserProfileHeader: UICollectionViewCell {
     
     let postsLabel: UILabel = {
         let label = UILabel()
-        let attributedText = NSMutableAttributedString(string: "0", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 14)])
-        let postsText = NSMutableAttributedString(string: "\nposts", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.lightGray])
-        attributedText.append(postsText)
-        label.attributedText = attributedText
+        label.text = "0"
         label.numberOfLines = 0
         label.textAlignment = .center
         return label
@@ -60,10 +57,7 @@ class UserProfileHeader: UICollectionViewCell {
     
     let followersLabel: UILabel = {
         let label = UILabel()
-        let attributedText = NSMutableAttributedString(string: "0\n", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 14)])
-        let postsText = NSMutableAttributedString(string: "followers", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.lightGray])
-        attributedText.append(postsText)
-        label.attributedText = attributedText
+        label.text = "0"
         label.numberOfLines = 0
         label.textAlignment = .center
         return label
@@ -71,10 +65,7 @@ class UserProfileHeader: UICollectionViewCell {
     
     let followingLabel: UILabel = {
         let label = UILabel()
-        let attributedText = NSMutableAttributedString(string: "0\n", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 14)])
-        let postsText = NSMutableAttributedString(string: "following", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.lightGray])
-        attributedText.append(postsText)
-        label.attributedText = attributedText
+        label.text = "0"
         label.numberOfLines = 0
         label.textAlignment = .center
         return label
@@ -114,16 +105,26 @@ class UserProfileHeader: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(user: User, countPosts: Int) {
+    func configure(user: User, postsCount: Int, followersCount: Int, followingCount: Int) {
         self.user = user
         profileImageView.loadImage(urlString: user.profileImageUrl)
         usernameLabel.text = user.username
         setupEditProfileButton()
         
-        let attributedText = NSMutableAttributedString(string: String(countPosts), attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 14)])
-        let postsText = NSMutableAttributedString(string: "\nposts", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.lightGray])
-        attributedText.append(postsText)
-        postsLabel.attributedText = attributedText
+        let attributedPostCount = NSMutableAttributedString(string: String(postsCount), attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 14)])
+        let postText = NSMutableAttributedString(string: "\nposts", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+        attributedPostCount.append(postText)
+        postsLabel.attributedText = attributedPostCount
+        
+        let attributedFollowersCount = NSMutableAttributedString(string: String(followersCount), attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 14)])
+        let followersText = NSMutableAttributedString(string: "\nfollowers", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+        attributedFollowersCount.append(followersText)
+        followersLabel.attributedText = attributedFollowersCount
+        
+        let attributedFollowingCount = NSMutableAttributedString(string: String(followingCount), attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 14)])
+        let followingText = NSMutableAttributedString(string: "\nfollowing", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+        attributedFollowingCount.append(followingText)
+        followingLabel.attributedText = attributedFollowingCount
     }
     
     private func setupEditProfileButton() {
@@ -190,6 +191,12 @@ class UserProfileHeader: UICollectionViewCell {
                 if let err = err {
                     print("Failed to unfollow user: \(err)")
                 }
+                
+                let attributedFollowersCount = NSMutableAttributedString(string: String("0"), attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 14)])
+                let followersText = NSMutableAttributedString(string: "\nfollowers", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+                attributedFollowersCount.append(followersText)
+                self.followersLabel.attributedText = attributedFollowersCount
+                
                 self.setupTitleFollow()
                 print("Succsesfully unfollowed user")
             }
@@ -200,6 +207,12 @@ class UserProfileHeader: UICollectionViewCell {
                 if let err = err{
                     print("Failed to follow user: \(err)")
                 }
+                
+                let attributedFollowersCount = NSMutableAttributedString(string: String("1"), attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 14)])
+                let followersText = NSMutableAttributedString(string: "\nfollowers", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+                attributedFollowersCount.append(followersText)
+                self.followersLabel.attributedText = attributedFollowersCount
+                
                 self.setupTitleUnfollow()
                 print("Successfully followed user")
             }

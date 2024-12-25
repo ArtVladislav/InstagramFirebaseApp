@@ -12,7 +12,7 @@ import FirebaseStorage
 
 
 class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
+
     let signInButton: UIButton = {
         let button = UIButton(type: .system)
         let attributedText = NSMutableAttributedString(string: "Already have an account? ", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
@@ -70,7 +70,7 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         view.addGestureRecognizer(tapGesture)
         setupUI()
     }
-    
+
     private func setupUI() {
         view.backgroundColor = .customThemeDark
         setupButton()
@@ -101,7 +101,7 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         
         view.addSubview(stackView)
         
-        stackView.anchor(top: plusFotoButton.bottomAnchor, leading: view.leadingAnchor, trailing: view.trailingAnchor, bottom: nil, paddingTop: .spacing64, paddingLeading: .spacing40, paddingTrailing: -.spacing40, paddingBottom: 0, width: 0, height: 220)
+        stackView.anchor(top: plusFotoButton.bottomAnchor, leading: view.leadingAnchor, trailing: view.trailingAnchor, bottom: nil, paddingTop: .spacing64, paddingLeading: .spacing40, paddingTrailing: -.spacing40, paddingBottom: 0, width: 0, height: 240)
         
     }
     
@@ -236,8 +236,3 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         }
     }
 }
-
-
-//#Preview {
-//    ViewController()
-//}

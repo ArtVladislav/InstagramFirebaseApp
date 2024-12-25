@@ -27,7 +27,6 @@ class UserProfilePhotoCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         layer.cornerRadius = 20
         clipsToBounds = true
         
