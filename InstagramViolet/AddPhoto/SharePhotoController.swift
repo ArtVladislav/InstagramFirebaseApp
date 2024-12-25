@@ -40,7 +40,7 @@ class SharePhotoController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .customThemeDark
+        view.backgroundColor = .customBlackWhite
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Share", style: .plain, target: self, action: #selector(handleShare))
         navigationController?.navigationBar.tintColor = UIColor.customThemeDarkText
         setupImageAndText()
