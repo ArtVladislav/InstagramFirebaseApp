@@ -61,7 +61,7 @@ class LoginController: UIViewController {
         setupInputFields()
         setupTarget()
     }
-
+    
     private func setupUI() {
         view.backgroundColor = .customThemeDark
         view.addSubviews(signUpButton, instagramLogo)
@@ -125,5 +125,4 @@ class LoginController: UIViewController {
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
-
 }

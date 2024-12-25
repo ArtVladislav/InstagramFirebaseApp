@@ -7,10 +7,16 @@
 
 import UIKit
 
+protocol HomePostCellDelegate {
+    func didTapComment(post: Post)
+}
+
 final class HomePostCell: UICollectionViewCell {
     
     static let cellId = "HomePostCell"
-
+    var delegate: HomePostCellDelegate?
+    var post: Post?
+    
     let userProfileImageView: CustomImageView = {
         let imageView = CustomImageView()
         imageView.contentMode = .scaleAspectFill
@@ -22,6 +28,7 @@ final class HomePostCell: UICollectionViewCell {
     let photoImageView: CustomImageView = {
         let imageView = CustomImageView()
         imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 20
         imageView.clipsToBounds = true
         return imageView
     }()
@@ -77,6 +84,7 @@ final class HomePostCell: UICollectionViewCell {
     }()
     
     func configure(post: Post) {
+        self.post = post
         photoImageView.loadImage(urlString: post.imageUrl)
         usernameLabel.text = post.user.username
         userProfileImageView.loadImage(urlString: post.user.profileImageUrl)
@@ -93,6 +101,8 @@ final class HomePostCell: UICollectionViewCell {
     }
     
     private func setupActionsButtons() {
+        
+        commentButton.addTarget(self, action: #selector(handleComment), for: .touchUpInside)
         let stackView = UIStackView(arrangedSubviews: [likeButton, commentButton, sendMessageButton])
         stackView.axis = .horizontal
         stackView.spacing = 8
@@ -106,6 +116,7 @@ final class HomePostCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .customThemeDark
+        layer.cornerRadius = 20
         addSubviews(userProfileImageView,
                     usernameLabel,
                     optionsButton,
@@ -125,5 +136,9 @@ final class HomePostCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    
+    @objc func handleComment() {
+        print("comment")
+        guard let post = self.post else { return }
+        delegate?.didTapComment(post: post)
+    }
 }
