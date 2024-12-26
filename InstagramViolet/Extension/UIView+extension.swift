@@ -40,9 +40,7 @@ public extension UIView {
         if height != 0 {
             heightAnchor.constraint(equalToConstant: height).isActive = true
         }
-        
     }
-    
 }
 
 extension Date {
@@ -80,8 +78,6 @@ extension Date {
             quotient = secondsAgo / year
             unit = "year"
         }
-        
         return "\(quotient) \(unit)\(quotient == 1 ? "" : "s") ago"
-        
     }
 }
