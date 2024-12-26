@@ -6,13 +6,14 @@
 //
 
 import UIKit
+import FirebaseDatabase
 
 class CommentsCell: UICollectionViewCell {
     
     static let cellId = "CommentsCell"
     
-    let nameView: UITextView = {
-        let nameView = UITextView()
+    let nameView: UILabel = {
+        let nameView = UILabel()
         nameView.font = .systemFont(ofSize: 14)
         nameView.text = "Username"
         nameView.textColor = .customThemeDarkText
@@ -27,16 +28,26 @@ class CommentsCell: UICollectionViewCell {
         textView.textColor = .customThemeDarkText
         textView.backgroundColor = .customThemeDark
         textView.layer.cornerRadius = 15
+        textView.isEditable = false
+        textView.isSelectable = false
+        textView.isScrollEnabled = true
         return textView
     }()
     
-    let imageView: UIImageView = {
-        let imageView = UIImageView()
+    let imageView: CustomImageView = {
+        let imageView = CustomImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 25
         imageView.clipsToBounds = true
         imageView.backgroundColor = .customThemeDark
         return imageView
+    }()
+    
+    let dateLabel: UILabel = {
+        let dateLabel = UILabel()
+        dateLabel.font = .systemFont(ofSize: 12)
+        dateLabel.textColor = .systemGray
+        return dateLabel
     }()
     
     override init(frame: CGRect) {
@@ -50,5 +61,19 @@ class CommentsCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configure(with comment: Comment) {
+        self.textView.text = comment.text
+        self.dateLabel.text = comment.creationDate.timeAgoDisplay()
+        Database.database().reference().child("users").child(comment.uid).observeSingleEvent(of: .value) { snapshot in
+            guard let dictionaries = snapshot.value as? [String: Any] else { return }
+            guard let imageUrl = dictionaries["imageFileURL"] as? String else { return }
+            guard let userName = dictionaries["username"] as? String else { return }
+            self.nameView.text = userName
+            self.imageView.loadImage(urlString: imageUrl)
+        } withCancel: { err in
+            print ("Failed to fetch User: \(err)")
+        }
     }
 }
