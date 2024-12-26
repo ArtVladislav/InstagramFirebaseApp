@@ -22,11 +22,11 @@ extension CommentsController {
 
     @objc private func keyboardWillShow(notification: Notification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            textField.frame = CGRect(x: 0, y: view.frame.height - keyboardSize.height - 100 , width: view.frame.width, height: 100)
+            containerView.frame = CGRect(x: 0, y: view.frame.height - keyboardSize.height - 50 , width: view.frame.width, height: 80)
         }
     }
 
     @objc private func keyboardWillHide(notification: Notification) {
-        textField.frame = CGRect(x: 0, y: view.frame.height - 100, width: view.frame.width, height: 100)
+        containerView.frame = CGRect(x: 0, y: view.frame.height - 80, width: view.frame.width, height: 80)
     }
 }
