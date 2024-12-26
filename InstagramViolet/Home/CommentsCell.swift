@@ -46,7 +46,6 @@ class CommentsCell: UICollectionViewCell {
         imageView.anchor(top: topAnchor, leading: leadingAnchor, trailing: nil, bottom: nil, paddingTop: 8, paddingLeading: 10, paddingTrailing: 0, paddingBottom: 0, width: 50, height: 50)
         nameView.anchor(top: topAnchor, leading: imageView.trailingAnchor, trailing: trailingAnchor, bottom: textView.topAnchor, paddingTop: 0, paddingLeading: 10, paddingTrailing: -10, paddingBottom: 0, width: 0, height: 28)
         textView.anchor(top: nameView.bottomAnchor, leading: imageView.trailingAnchor, trailing: trailingAnchor, bottom: bottomAnchor, paddingTop: 0, paddingLeading: 10, paddingTrailing: -10, paddingBottom: 0, width: 0, height: 0)
-        
     }
     
     required init?(coder: NSCoder) {
