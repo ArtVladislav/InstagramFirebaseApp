@@ -11,21 +11,36 @@ private let reuseIdentifier = "Cell"
 
 class CommentsController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
-    let textField: UITextField = {
-        let textField = UITextField()
+    let containerView: UIView = {
+        let containerView = UIView()
+        containerView.backgroundColor = .customThemeDark
+        return containerView
+    }()
+    
+    let submitButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage.send2, for: .normal)
+        return button
+    }()
+    
+    let textField: CustomTextField = {
+        let textField = CustomTextField()
         textField.placeholder = "Enter comment..."
-        textField.backgroundColor = .customThemeDark
+        textField.backgroundColor = .customBlackWhite
+        textField.layer.cornerRadius = 18
+        textField.clipsToBounds = true
         return textField
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.collectionView!.register(CommentsCell.self, forCellWithReuseIdentifier: CommentsCell.cellId)
-        view.addSubview(textField)
-        textField.frame = CGRect(x: 0, y: view.frame.height - 100, width: view.frame.width, height: 100)
+        view.addSubview(containerView)
+        containerView.frame = CGRect(x: 0, y: view.frame.height - 80, width: view.frame.width, height: 80)
         setupInitialStateNotificationCenter()
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
+        setupUI()
         
     }
     
@@ -39,6 +54,11 @@ class CommentsController: UICollectionViewController, UICollectionViewDelegateFl
         tabBarController?.tabBar.isHidden = false
     }
     
+    private func setupUI() {
+        containerView.addSubviews(textField, submitButton)
+        textField.anchor(top: containerView.topAnchor, leading: containerView.leadingAnchor, trailing: submitButton.leadingAnchor, bottom: containerView.bottomAnchor, paddingTop: 4, paddingLeading: 16, paddingTrailing: -8, paddingBottom: -40, width: 0, height: 40)
+        submitButton.anchor(top: containerView.topAnchor, leading: textField.trailingAnchor, trailing: containerView.trailingAnchor, bottom: containerView.bottomAnchor, paddingTop: 4, paddingLeading: 0, paddingTrailing: -10, paddingBottom: -40, width: 40, height: 40)
+    }
     /*
     // MARK: - Navigation
 
@@ -71,7 +91,11 @@ class CommentsController: UICollectionViewController, UICollectionViewDelegateFl
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 80)
+        return CGSize(width: view.frame.width, height: 90)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 3
     }
     
     @objc func dismissKeyboard() {
@@ -112,6 +136,6 @@ class CommentsController: UICollectionViewController, UICollectionViewDelegateFl
     
     }
     */
-    
+   
 }
 
