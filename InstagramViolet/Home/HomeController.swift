@@ -65,7 +65,8 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         ref.observeSingleEvent(of: .value, with: { snapshot in
             guard let dictionary = snapshot.value as? [String: [String: Any]] else { return }
             dictionary.forEach { key, value in
-                let post = Post(user: user, dictionary: value)
+                var post = Post(user: user, dictionary: value)
+                post.id = key
                 self.posts.insert(post, at: 0)
             }
             self.posts.sort { (p1,p2) -> Bool in
@@ -111,6 +112,7 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
     
     func didTapComment(post: Post) {
         let commentsController = CommentsController(collectionViewLayout: UICollectionViewFlowLayout())
+        commentsController.fetchComments(forPost: post)
         navigationController?.pushViewController(commentsController, animated: true)
     }
     
