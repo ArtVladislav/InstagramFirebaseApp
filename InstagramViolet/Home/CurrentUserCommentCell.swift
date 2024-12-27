@@ -14,7 +14,7 @@ class CurrentUserCommentCell: UICollectionViewCell {
     
     let nameView: UILabel = {
         let nameView = UILabel()
-        nameView.font = .systemFont(ofSize: 14)
+        nameView.font = .boldSystemFont(ofSize: 14)
         nameView.text = "Username"
         nameView.textColor = .customThemeDarkText
         nameView.backgroundColor = UIColor.clear
@@ -30,7 +30,7 @@ class CurrentUserCommentCell: UICollectionViewCell {
         textView.layer.cornerRadius = 15
         textView.isEditable = false
         textView.isSelectable = false
-        textView.isScrollEnabled = true
+        textView.isScrollEnabled = false
         return textView
     }()
     
@@ -38,8 +38,8 @@ class CurrentUserCommentCell: UICollectionViewCell {
         let imageView = CustomImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.layer.borderWidth = 1
-        imageView.layer.borderColor = UIColor.cyan.cgColor
-        imageView.layer.cornerRadius = 25
+        imageView.layer.borderColor = UIColor.customThemeGray.cgColor
+        imageView.layer.cornerRadius = 23
         imageView.clipsToBounds = true
         imageView.backgroundColor = .customThemeComments
         return imageView
@@ -48,7 +48,7 @@ class CurrentUserCommentCell: UICollectionViewCell {
     let dateLabel: UILabel = {
         let dateLabel = UILabel()
         dateLabel.font = .systemFont(ofSize: 12)
-        dateLabel.textColor = .systemGray
+        dateLabel.textColor = .customThemeGray
         dateLabel.backgroundColor = UIColor.clear
         return dateLabel
     }()
@@ -57,7 +57,7 @@ class CurrentUserCommentCell: UICollectionViewCell {
         super.init(frame: frame)
         backgroundColor = UIColor.clear
         addSubviews(textView, imageView, nameView, dateLabel)
-        imageView.anchor(top: topAnchor, leading: nil, trailing: trailingAnchor, bottom: nil, paddingTop: 8, paddingLeading: 0, paddingTrailing: -10, paddingBottom: 0, width: 50, height: 50)
+        imageView.anchor(top: topAnchor, leading: nil, trailing: trailingAnchor, bottom: nil, paddingTop: 4, paddingLeading: 0, paddingTrailing: -10, paddingBottom: 0, width: 46, height: 46)
         dateLabel.anchor(top: topAnchor, leading: textView.leadingAnchor, trailing: nil, bottom: textView.topAnchor, paddingTop: 0, paddingLeading: 8, paddingTrailing: 0, paddingBottom: 0, width: 0, height: 20)
         nameView.anchor(top: topAnchor, leading: nil, trailing: textView.trailingAnchor, bottom: textView.topAnchor, paddingTop: 0, paddingLeading: 0, paddingTrailing: -8, paddingBottom: 0, width: 0, height: 20)
         textView.anchor(top: nameView.bottomAnchor, leading: leadingAnchor, trailing: imageView.leadingAnchor, bottom: bottomAnchor, paddingTop: 0, paddingLeading: 40, paddingTrailing: -10, paddingBottom: 0, width: 0, height: 0)

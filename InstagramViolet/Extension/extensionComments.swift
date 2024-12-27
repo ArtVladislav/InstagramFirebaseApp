@@ -36,6 +36,7 @@ extension CommentsController {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             containerView.frame = CGRect(x: 0, y: view.frame.height - keyboardSize.height - 50 , width: view.frame.width, height: 80)
             collectionView.contentInset.bottom = keyboardSize.height + 30
+            collectionView.verticalScrollIndicatorInsets.bottom = keyboardSize.height + 30
             scrollToLastPost()
         }
     }
@@ -43,9 +44,11 @@ extension CommentsController {
     @objc private func keyboardWillHide(notification: Notification) {
         containerView.frame = CGRect(x: 0, y: view.frame.height - 80, width: view.frame.width, height: 80)
         collectionView.contentInset.bottom = 60
+        collectionView.verticalScrollIndicatorInsets.bottom = 60
     }
     
     @objc private func keyboardDidShow(notification: Notification) {
         collectionView.contentInset.bottom = 65
+        collectionView.verticalScrollIndicatorInsets.bottom = 65
     }
 }
