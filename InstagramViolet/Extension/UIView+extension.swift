@@ -78,6 +78,6 @@ extension Date {
             quotient = secondsAgo / year
             unit = "year"
         }
-        return "\(quotient) \(unit)\(quotient == 1 ? "" : "s") ago"
+        return " \(unit == "second" ? "a few" : String(quotient)) \(unit)\(quotient == 1 ? "" : "s") ago"
     }
 }

@@ -56,9 +56,6 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
         Database.database().reference().child("following").child(uid).observeSingleEvent(of: .value) { snapshot in
             guard let dictionary = snapshot.value as? [String: Any] else { return }
             self.following = dictionary.count
-            print("following: \(self.following)")
-            
-            
         } withCancel: { err in
             print("Failed fetch followers: \(err)")
         }

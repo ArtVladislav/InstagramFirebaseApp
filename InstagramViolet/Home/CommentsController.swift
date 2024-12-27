@@ -13,8 +13,20 @@ private let reuseIdentifier = "Cell"
 
 class CommentsController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
+    var currentUser: User?
     var post: Post?
     var comments: [Comment] = []
+    
+    let imageView: CustomImageView = {
+        let imageView = CustomImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.borderWidth = 1
+        imageView.layer.borderColor = UIColor.cyan.cgColor
+        imageView.layer.cornerRadius = 18
+        imageView.clipsToBounds = true
+        imageView.backgroundColor = .customThemeDark
+        return imageView
+    }()
     
     let containerView: UIView = {
         let containerView = UIView()
@@ -39,12 +51,14 @@ class CommentsController: UICollectionViewController, UICollectionViewDelegateFl
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        fetchUserUid()
         self.collectionView!.register(CommentsCell.self, forCellWithReuseIdentifier: CommentsCell.cellId)
+        self.collectionView.register(CurrentUserCommentCell.self, forCellWithReuseIdentifier: CurrentUserCommentCell.cellId)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
         setupInitialStateNotificationCenter()
         setupUI()
-        collectionView.isScrollEnabled = true
+        fetchComments()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -57,8 +71,21 @@ class CommentsController: UICollectionViewController, UICollectionViewDelegateFl
         tabBarController?.tabBar.isHidden = false
     }
     
-    func fetchComments(forPost post: Post) {
-        self.post = post
+    private func fetchUserUid() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value) { snapshot in
+            guard let dictionary = snapshot.value as? [String: Any] else { return }
+            self.currentUser = User(uid: uid, dictionary: dictionary)
+            guard let imageUrl = self.currentUser?.profileImageUrl else { return }
+            self.imageView.loadImage(urlString: imageUrl)
+        } withCancel: { err in
+            print(err)
+        }
+
+    }
+    
+    func fetchComments() {
+        guard let post = self.post else { return }
         guard let postId = post.id else { return }
         Database.database().reference().child("comments").child(postId).observeSingleEvent(of: .value) { snapshot in
             guard let dictionaries = snapshot.value as? [String: [String: Any]] else { return }
@@ -71,6 +98,7 @@ class CommentsController: UICollectionViewController, UICollectionViewDelegateFl
             }
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
+                self.scrollToLastPost()
             }
         } withCancel: { err in
             print("Failed to fetch comments: \(err)")
@@ -79,11 +107,16 @@ class CommentsController: UICollectionViewController, UICollectionViewDelegateFl
     }
     
     private func setupUI() {
+        navigationItem.title = "Comments"
+        navigationController?.navigationBar.tintColor = .customThemeDarkText
+        collectionView.backgroundView = UIImageView(image: UIImage.customFonTwo)
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
         view.addSubview(containerView)
         containerView.frame = CGRect(x: 0, y: view.frame.height - 80, width: view.frame.width, height: 80)
-        containerView.addSubviews(textField, submitButton)
-        textField.anchor(top: containerView.topAnchor, leading: containerView.leadingAnchor, trailing: submitButton.leadingAnchor, bottom: containerView.bottomAnchor, paddingTop: 4, paddingLeading: 16, paddingTrailing: -8, paddingBottom: -40, width: 0, height: 40)
-        submitButton.anchor(top: containerView.topAnchor, leading: textField.trailingAnchor, trailing: containerView.trailingAnchor, bottom: containerView.bottomAnchor, paddingTop: 4, paddingLeading: 0, paddingTrailing: -10, paddingBottom: -40, width: 40, height: 40)
+        containerView.addSubviews(textField, submitButton, imageView)
+        textField.anchor(top: containerView.topAnchor, leading: imageView.trailingAnchor, trailing: submitButton.leadingAnchor, bottom: containerView.bottomAnchor, paddingTop: 4, paddingLeading: 8, paddingTrailing: -8, paddingBottom: -40, width: 0, height: 36)
+        submitButton.anchor(top: containerView.topAnchor, leading: textField.trailingAnchor, trailing: containerView.trailingAnchor, bottom: containerView.bottomAnchor, paddingTop: 4, paddingLeading: 0, paddingTrailing: -10, paddingBottom: -40, width: 36, height: 36)
+        imageView.anchor(top: containerView.topAnchor, leading: containerView.leadingAnchor, trailing: nil, bottom: containerView.bottomAnchor, paddingTop: 4, paddingLeading: 8, paddingTrailing: 0, paddingBottom: -40, width: 36, height: 36)
         submitButton.addTarget(self, action: #selector(handleSubmit), for: .touchUpInside)
     }
     /*
@@ -109,11 +142,18 @@ class CommentsController: UICollectionViewController, UICollectionViewDelegateFl
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CommentsCell.cellId, for: indexPath) as! CommentsCell
-        if indexPath.item <= comments.count {
+        guard let uid = self.currentUser?.uid else { return UICollectionViewCell() }
+        if comments[indexPath.item].uid == uid, indexPath.item <= comments.count {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CurrentUserCommentCell.cellId, for: indexPath) as! CurrentUserCommentCell
             cell.configure(with: comments[indexPath.item])
+            return cell
+        } else if indexPath.item <= comments.count {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CommentsCell.cellId, for: indexPath) as! CommentsCell
+            cell.configure(with: comments[indexPath.item])
+            return cell
+        } else {
+            return UICollectionViewCell()
         }
-        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -121,7 +161,7 @@ class CommentsController: UICollectionViewController, UICollectionViewDelegateFl
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 3
+        return 5
     }
     
     @objc func dismissKeyboard() {
@@ -139,14 +179,15 @@ class CommentsController: UICollectionViewController, UICollectionViewDelegateFl
             }
             self.textField.text = ""
             print("Successfully inserted comment")
-            DispatchQueue.main.async {
-                guard let post = self.post else { return }
-                self.comments = []
-                self.fetchComments(forPost: post)
-                self.collectionView.reloadData()
-            }
+            
+            self.comments.append(Comment(dictionary: values) )
+            let lastIndexPath = IndexPath(item: self.comments.count - 1, section: 0)
+            self.collectionView.insertItems(at: [lastIndexPath])
+            self.collectionView.reloadSections(IndexSet(integer: 0))
+            self.scrollToLastPost()
         }
     }
+    
     // MARK: UICollectionViewDelegate
 
     /*
