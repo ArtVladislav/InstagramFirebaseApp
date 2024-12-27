@@ -1,16 +1,16 @@
 //
-//  CommentsCell.swift
+//  CurrentUserCommentCell.swift
 //  InstagramViolet
 //
-//  Created by Владислав Артюхов on 24.12.2024.
+//  Created by Владислав Артюхов on 27.12.2024.
 //
 
 import UIKit
 import FirebaseDatabase
 
-class CommentsCell: UICollectionViewCell {
+class CurrentUserCommentCell: UICollectionViewCell {
     
-    static let cellId = "CommentsCell"
+    static let cellId = "CurrentUserCommentCell"
     
     let nameView: UILabel = {
         let nameView = UILabel()
@@ -38,7 +38,7 @@ class CommentsCell: UICollectionViewCell {
         let imageView = CustomImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.layer.borderWidth = 1
-        imageView.layer.borderColor = UIColor.lightGray.cgColor
+        imageView.layer.borderColor = UIColor.cyan.cgColor
         imageView.layer.cornerRadius = 25
         imageView.clipsToBounds = true
         imageView.backgroundColor = .customThemeComments
@@ -56,12 +56,17 @@ class CommentsCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor.clear
-        
         addSubviews(textView, imageView, nameView, dateLabel)
-        imageView.anchor(top: topAnchor, leading: leadingAnchor, trailing: nil, bottom: nil, paddingTop: 8, paddingLeading: 10, paddingTrailing: 0, paddingBottom: 0, width: 50, height: 50)
-        dateLabel.anchor(top: topAnchor, leading: nil, trailing: textView.trailingAnchor, bottom: textView.topAnchor, paddingTop: 0, paddingLeading: 0, paddingTrailing: -16, paddingBottom: 0, width: 0, height: 20)
-        nameView.anchor(top: topAnchor, leading: textView.leadingAnchor, trailing: trailingAnchor, bottom: textView.topAnchor, paddingTop: 0, paddingLeading: 8, paddingTrailing: -10, paddingBottom: 0, width: 0, height: 20)
-        textView.anchor(top: nameView.bottomAnchor, leading: imageView.trailingAnchor, trailing: trailingAnchor, bottom: bottomAnchor, paddingTop: 0, paddingLeading: 10, paddingTrailing: -40, paddingBottom: 0, width: 0, height: 0)
+        imageView.anchor(top: topAnchor, leading: nil, trailing: trailingAnchor, bottom: nil, paddingTop: 8, paddingLeading: 0, paddingTrailing: -10, paddingBottom: 0, width: 50, height: 50)
+        dateLabel.anchor(top: topAnchor, leading: textView.leadingAnchor, trailing: nil, bottom: textView.topAnchor, paddingTop: 0, paddingLeading: 8, paddingTrailing: 0, paddingBottom: 0, width: 0, height: 20)
+        nameView.anchor(top: topAnchor, leading: nil, trailing: textView.trailingAnchor, bottom: textView.topAnchor, paddingTop: 0, paddingLeading: 0, paddingTrailing: -8, paddingBottom: 0, width: 0, height: 20)
+        textView.anchor(top: nameView.bottomAnchor, leading: leadingAnchor, trailing: imageView.leadingAnchor, bottom: bottomAnchor, paddingTop: 0, paddingLeading: 40, paddingTrailing: -10, paddingBottom: 0, width: 0, height: 0)
+        
+        
+//        imageView.anchor(top: topAnchor, leading: leadingAnchor, trailing: nil, bottom: nil, paddingTop: 8, paddingLeading: 10, paddingTrailing: 0, paddingBottom: 0, width: 50, height: 50)
+//        dateLabel.anchor(top: topAnchor, leading: nil, trailing: textView.trailingAnchor, bottom: textView.topAnchor, paddingTop: 0, paddingLeading: 0, paddingTrailing: -16, paddingBottom: 0, width: 0, height: 20)
+//        nameView.anchor(top: topAnchor, leading: textView.leadingAnchor, trailing: trailingAnchor, bottom: textView.topAnchor, paddingTop: 0, paddingLeading: 8, paddingTrailing: -10, paddingBottom: 0, width: 0, height: 20)
+//        textView.anchor(top: nameView.bottomAnchor, leading: imageView.trailingAnchor, trailing: trailingAnchor, bottom: bottomAnchor, paddingTop: 0, paddingLeading: 10, paddingTrailing: -10, paddingBottom: 0, width: 0, height: 0)
         
     }
     
