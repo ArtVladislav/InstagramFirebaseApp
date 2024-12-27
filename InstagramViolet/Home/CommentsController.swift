@@ -21,7 +21,7 @@ class CommentsController: UICollectionViewController, UICollectionViewDelegateFl
         let imageView = CustomImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.layer.borderWidth = 1
-        imageView.layer.borderColor = UIColor.cyan.cgColor
+        imageView.layer.borderColor = UIColor.customThemeGray.cgColor
         imageView.layer.cornerRadius = 18
         imageView.clipsToBounds = true
         imageView.backgroundColor = .customThemeDark
@@ -44,6 +44,8 @@ class CommentsController: UICollectionViewController, UICollectionViewDelegateFl
         let textField = CustomTextField()
         textField.placeholder = "Enter comment..."
         textField.backgroundColor = .customBlackWhite
+        textField.layer.borderWidth = 1
+        textField.layer.borderColor = UIColor.customThemeGray.cgColor
         textField.layer.cornerRadius = 18
         textField.clipsToBounds = true
         return textField
@@ -52,7 +54,7 @@ class CommentsController: UICollectionViewController, UICollectionViewDelegateFl
     override func viewDidLoad() {
         super.viewDidLoad()
         fetchUserUid()
-        self.collectionView!.register(CommentsCell.self, forCellWithReuseIdentifier: CommentsCell.cellId)
+        self.collectionView.register(CommentsCell.self, forCellWithReuseIdentifier: CommentsCell.cellId)
         self.collectionView.register(CurrentUserCommentCell.self, forCellWithReuseIdentifier: CurrentUserCommentCell.cellId)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
@@ -111,6 +113,7 @@ class CommentsController: UICollectionViewController, UICollectionViewDelegateFl
         navigationController?.navigationBar.tintColor = .customThemeDarkText
         collectionView.backgroundView = UIImageView(image: UIImage.customFonTwo)
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
+        collectionView.verticalScrollIndicatorInsets.bottom = 60
         view.addSubview(containerView)
         containerView.frame = CGRect(x: 0, y: view.frame.height - 80, width: view.frame.width, height: 80)
         containerView.addSubviews(textField, submitButton, imageView)
@@ -157,11 +160,31 @@ class CommentsController: UICollectionViewController, UICollectionViewDelegateFl
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 90)
+        guard let uid = self.currentUser?.uid else { return CGSize(width: view.frame.width, height: 90)}
+        let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
+        let targetSize = CGSize(width: view.frame.width, height: 500)
+        
+        if comments[indexPath.item].uid == uid, indexPath.item <= comments.count {
+            let cell = CurrentUserCommentCell(frame: frame)
+            cell.configure(with: comments[indexPath.item])
+            cell.layoutIfNeeded()
+            let estimatedSize = cell.systemLayoutSizeFitting(targetSize)
+            let height = max(55, estimatedSize.height)
+            return CGSize(width: view.frame.width, height: height)
+        } else if indexPath.item <= comments.count {
+            let cell = CommentsCell(frame: frame)
+            cell.configure(with: comments[indexPath.item])
+            cell.layoutIfNeeded()
+            let estimatedSize = cell.systemLayoutSizeFitting(targetSize)
+            let height = max(55, estimatedSize.height)
+            return CGSize(width: view.frame.width, height: height)
+        } else {
+            return CGSize(width: view.frame.width, height: 90)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 5
+        return 10
     }
     
     @objc func dismissKeyboard() {
