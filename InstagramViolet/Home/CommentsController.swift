@@ -105,13 +105,20 @@ class CommentsController: UICollectionViewController, UICollectionViewDelegateFl
         } withCancel: { err in
             print("Failed to fetch comments: \(err)")
         }
-
     }
     
     private func setupUI() {
         navigationItem.title = "Comments"
         navigationController?.navigationBar.tintColor = .customThemeDarkText
-        collectionView.backgroundView = UIImageView(image: UIImage.customFonTwo)
+
+        let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
+        backgroundImage.image = UIImage.customFonTwo
+        backgroundImage.contentMode = .scaleAspectFill
+        backgroundImage.clipsToBounds = true
+        view.addSubview(backgroundImage)
+        view.sendSubviewToBack(backgroundImage)
+        collectionView.backgroundColor = UIColor.clear
+        
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
         collectionView.verticalScrollIndicatorInsets.bottom = 60
         view.addSubview(containerView)
@@ -122,15 +129,6 @@ class CommentsController: UICollectionViewController, UICollectionViewDelegateFl
         imageView.anchor(top: containerView.topAnchor, leading: containerView.leadingAnchor, trailing: nil, bottom: containerView.bottomAnchor, paddingTop: 4, paddingLeading: 8, paddingTrailing: 0, paddingBottom: -40, width: 36, height: 36)
         submitButton.addTarget(self, action: #selector(handleSubmit), for: .touchUpInside)
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
 
     // MARK: UICollectionViewDataSource
 
@@ -210,37 +208,5 @@ class CommentsController: UICollectionViewController, UICollectionViewDelegateFl
             self.scrollToLastPost()
         }
     }
-    
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-    
-    }
-    */
-   
 }
 

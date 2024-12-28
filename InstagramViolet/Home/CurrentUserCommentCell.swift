@@ -15,7 +15,7 @@ class CurrentUserCommentCell: UICollectionViewCell {
     let nameView: UILabel = {
         let nameView = UILabel()
         nameView.font = .boldSystemFont(ofSize: 14)
-        nameView.text = "Username"
+        nameView.text = ""
         nameView.textColor = .customThemeDarkText
         nameView.backgroundColor = UIColor.clear
         return nameView
@@ -24,7 +24,7 @@ class CurrentUserCommentCell: UICollectionViewCell {
     let textView: UITextView = {
        let textView = UITextView()
         textView.font = .systemFont(ofSize: 13)
-        textView.text = "Comment..."
+        textView.text = ""
         textView.textColor = .customThemeDarkText
         textView.backgroundColor = .customThemeComments
         textView.layer.cornerRadius = 15
