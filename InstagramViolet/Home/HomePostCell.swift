@@ -9,6 +9,7 @@ import UIKit
 
 protocol HomePostCellDelegate {
     func didTapComment(post: Post)
+    func didLike(for cell: HomePostCell)
 }
 
 final class HomePostCell: UICollectionViewCell {
@@ -88,6 +89,7 @@ final class HomePostCell: UICollectionViewCell {
         photoImageView.loadImage(urlString: post.imageUrl)
         usernameLabel.text = post.user.username
         userProfileImageView.loadImage(urlString: post.user.profileImageUrl)
+        likeButton.setImage(post.hasLiked == true ? UIImage.likeSelected.withRenderingMode(.alwaysOriginal) : UIImage.likeUnselected.withRenderingMode(.alwaysOriginal), for: .normal)
         
         let timeAgoDisplay = post.creationDate.timeAgoDisplay()
         let attributedText = NSMutableAttributedString(string: post.user.username + " ", attributes: [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 14)])
@@ -101,8 +103,8 @@ final class HomePostCell: UICollectionViewCell {
     }
     
     private func setupActionsButtons() {
-        
         commentButton.addTarget(self, action: #selector(handleComment), for: .touchUpInside)
+        likeButton.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
         let stackView = UIStackView(arrangedSubviews: [likeButton, commentButton, sendMessageButton])
         stackView.axis = .horizontal
         stackView.spacing = 8
@@ -110,7 +112,6 @@ final class HomePostCell: UICollectionViewCell {
         addSubviews(stackView, bookmarkButton)
         stackView.anchor(top: photoImageView.bottomAnchor, leading: leadingAnchor, trailing: nil, bottom: nil, paddingTop: 0, paddingLeading: 12, paddingTrailing: 0, paddingBottom: 0, width: 120, height: 50)
         bookmarkButton.anchor(top: photoImageView.bottomAnchor, leading: nil, trailing: trailingAnchor, bottom: nil, paddingTop: 0, paddingLeading: 0, paddingTrailing: -16, paddingBottom: 0, width: 0, height: 50)
-        
     }
     
     override init(frame: CGRect) {
@@ -135,10 +136,14 @@ final class HomePostCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     @objc func handleComment() {
         print("comment")
         guard let post = self.post else { return }
         delegate?.didTapComment(post: post)
+    }
+
+    @objc func handleLike() {
+        delegate?.didLike(for: self)
     }
 }
