@@ -22,22 +22,23 @@ class UserProfileHeader: UICollectionViewCell {
     
     let gridButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage.grid.withRenderingMode(.alwaysOriginal), for: .normal)
-//        button.tintColor = UIColor(white: 1, alpha: 0.5)
+        button.setImage(UIImage.grid, for: .normal)
+        button.tintColor = UIColor.gridList
+        button.tintColor = UIColor.mainBlue()
         return button
     }()
     
     let listButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage.list.withRenderingMode(.alwaysOriginal), for: .normal)
-//        button.tintColor = UIColor(white: 0, alpha: 0.2)
+        button.setImage(UIImage.list, for: .normal)
+        button.tintColor = UIColor.gridList
         return button
     }()
     
     let bookmarkButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage.ribbon.withRenderingMode(.alwaysOriginal), for: .normal)
-//        button.tintColor = UIColor(white: 0, alpha: 0.2)
+        button.setImage(UIImage.ribbon, for: .normal)
+        button.tintColor = UIColor.gridList
         return button
     }()
     
@@ -97,8 +98,6 @@ class UserProfileHeader: UICollectionViewCell {
         usernameLabel.anchor(top: profileImageView.bottomAnchor, leading: leadingAnchor, trailing: trailingAnchor, bottom: gridButton.topAnchor, paddingTop: 4, paddingLeading: 12, paddingTrailing: 12, paddingBottom: 4, width: 0, height: 0)
         
         editProfileOrFollowButton.anchor(top: followersLabel.bottomAnchor, leading: postsLabel.leadingAnchor, trailing: followingLabel.trailingAnchor, bottom: nil, paddingTop: 12, paddingLeading: 0, paddingTrailing: 0, paddingBottom: 0, width: 0, height: 34)
-        
-        
     }
     
     required init?(coder: NSCoder) {
@@ -154,6 +153,10 @@ class UserProfileHeader: UICollectionViewCell {
         let stackView = UIStackView(arrangedSubviews: [gridButton, listButton, bookmarkButton])
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
+        
+        gridButton.addTarget(self, action: #selector(handleChangeToGrid), for: .touchUpInside)
+        listButton.addTarget(self, action: #selector(handleChangeToListView), for: .touchUpInside)
+        bookmarkButton.addTarget(self, action: #selector(handleChangeToBookmark), for: .touchUpInside)
         addSubviews(stackView, topDividerView, bottomDividerView)
         stackView.anchor(top: nil, leading: leadingAnchor, trailing: trailingAnchor, bottom: self.bottomAnchor, paddingTop: 0, paddingLeading: 0, paddingTrailing: 0, paddingBottom: 0, width: 0, height: 50)
         topDividerView.anchor(top: nil, leading: leadingAnchor, trailing: trailingAnchor, bottom: stackView.topAnchor, paddingTop: 0, paddingLeading: 0, paddingTrailing: 0, paddingBottom: 0, width: 0, height: 0.5)
@@ -180,6 +183,24 @@ class UserProfileHeader: UICollectionViewCell {
         self.editProfileOrFollowButton.setTitle("Unfollow", for: .normal)
         self.editProfileOrFollowButton.setTitleColor(.customThemeDarkText, for: .normal)
         self.editProfileOrFollowButton.layer.borderColor = UIColor.lightGray.cgColor
+    }
+    
+    @objc func handleChangeToGrid() {
+        gridButton.tintColor = .mainBlue()
+        listButton.tintColor = UIColor.gridList
+        bookmarkButton.tintColor = UIColor.gridList
+    }
+    
+    @objc func handleChangeToListView() {
+        listButton.tintColor = .mainBlue()
+        gridButton.tintColor = UIColor.gridList
+        bookmarkButton.tintColor = UIColor.gridList
+    }
+    
+    @objc func handleChangeToBookmark() {
+        bookmarkButton.tintColor = .mainBlue()
+        gridButton.tintColor = UIColor.gridList
+        listButton.tintColor = UIColor.gridList
     }
     
     @objc func handleEditProfileOrFollow() {
