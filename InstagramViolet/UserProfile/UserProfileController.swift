@@ -9,12 +9,14 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 
-class UserProfileController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-    
+class UserProfileController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UserProfileHeaderDelegate {
+        
     var user: User?
     var posts = [Post]()
     var following = 0
     var followers = 0
+    
+    var isGridView: Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,10 +25,21 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
         navigationController?.navigationBar.tintColor = .customThemeDarkText
         collectionView.register(UserProfileHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: UserProfileHeader.cellId)
         collectionView.register(UserProfilePhotoCell.self, forCellWithReuseIdentifier: UserProfilePhotoCell.cellId)
+        collectionView.register(HomePostCell.self, forCellWithReuseIdentifier: HomePostCell.cellId)
         fetchUser()
         setupLogOutButton()
     }
     
+    func didChangeToListView() {
+        isGridView = false
+        collectionView.reloadData()
+    }
+    
+    func didChangeToGridView() {
+        isGridView = true
+        collectionView.reloadData()
+    }
+
     private func fetchUser() {
         let uid = user?.uid ?? Auth.auth().currentUser?.uid ?? ""
         Database.fetchUserWithUid(uid: uid) { user in
@@ -72,11 +85,17 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: UserProfilePhotoCell.cellId, for: indexPath) as! UserProfilePhotoCell
-        cell.post = posts[indexPath.item]
-        
-        return cell
+        if isGridView {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: UserProfilePhotoCell.cellId, for: indexPath) as! UserProfilePhotoCell
+            cell.post = posts[indexPath.item]
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomePostCell.cellId, for: indexPath) as! HomePostCell
+            if (indexPath.item <= posts.count) {
+                cell.configure(post: posts[indexPath.item])
+            }
+            return cell
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -87,14 +106,21 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = (view.frame.width - 2) / 3
-        return CGSize(width: width, height: width)
+        
+        if isGridView {
+            let width = (view.frame.width - 2) / 3
+            return CGSize(width: width, height: width)
+        } else {
+            return CGSize(width: collectionView.frame.width, height: collectionView.frame.width + 186)
+        }
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: UserProfileHeader.cellId, for: indexPath ) as! UserProfileHeader
         guard let user = self.user else { return header }
         header.configure(user: user, postsCount: posts.count, followersCount: followers, followingCount: following)
+        header.delegate = self 
+        
         return header
     }
     
@@ -117,7 +143,6 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
             }
         }))
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        
         present(alertController, animated: true, completion: nil)
     }
 }

@@ -9,10 +9,16 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 
+protocol UserProfileHeaderDelegate {
+    func didChangeToListView()
+    func didChangeToGridView()
+}
+
 class UserProfileHeader: UICollectionViewCell {
     
     static let cellId = "UserProfileHeader"
     var user: User?
+    var delegate: UserProfileHeaderDelegate?
     
     let profileImageView: CustomImageView = {
         let imageView = CustomImageView()
@@ -189,12 +195,14 @@ class UserProfileHeader: UICollectionViewCell {
         gridButton.tintColor = .mainBlue()
         listButton.tintColor = UIColor.gridList
         bookmarkButton.tintColor = UIColor.gridList
+        delegate?.didChangeToGridView()
     }
     
     @objc func handleChangeToListView() {
         listButton.tintColor = .mainBlue()
         gridButton.tintColor = UIColor.gridList
         bookmarkButton.tintColor = UIColor.gridList
+        delegate?.didChangeToListView()
     }
     
     @objc func handleChangeToBookmark() {
