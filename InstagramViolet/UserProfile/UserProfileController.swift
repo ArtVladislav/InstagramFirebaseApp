@@ -15,7 +15,7 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
     var posts = [Post]()
     var following = 0
     var followers = 0
-    
+    var isFinishedPading = false
     var isGridView: Bool = true
     
     override func viewDidLoad() {
@@ -46,8 +46,48 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
             self.user = user
             self.navigationItem.title = self.user?.username
             self.collectionView.reloadData()
-            self.fetchOrderedPost()
+            
+            //self.fetchOrderedPost()
+            self.paginatePosts()
             self.fetchFollowing()
+        }
+    }
+    
+    private func paginatePosts() {
+
+        guard let uid = user?.uid else { return }
+        let ref = Database.database().reference().child("posts").child(uid)
+        var query = ref.queryOrdered(byChild: "creationDate")
+        
+        if self.posts.count > 0 {
+            let value = self.posts.last?.creationDate.timeIntervalSince1970
+            query = query.queryEnding(atValue: value)
+            print("last post id= \(value)")
+        }
+        
+        query.queryLimited(toLast: 4).observeSingleEvent(of: .value) { snapshot in
+            guard var allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+            allObjects.reverse()
+            
+            if allObjects.count < 4 {
+                self.isFinishedPading = true
+            }
+            if self.posts.count > 0 && allObjects.count > 0  {
+                allObjects.removeFirst()
+            }
+            guard let user = self.user else { return }
+            allObjects.forEach { snapshot in
+                guard let dictionary = snapshot.value as? [String: Any] else { return }
+                var post = Post(user: user, dictionary: dictionary)
+                post.id = snapshot.key
+                print ("post id = \(post.id!)")
+                //                self.posts.insert(post, at: 0)
+                self.posts.append(post)
+            }
+            
+            self.collectionView.reloadData()
+        } withCancel: { err in
+            print("Failed to fetch posts: \(err)")
         }
     }
     
@@ -85,6 +125,11 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        if indexPath.item == self.posts.count - 1 && !isFinishedPading {
+            self.paginatePosts()
+        }
+        
         if isGridView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: UserProfilePhotoCell.cellId, for: indexPath) as! UserProfilePhotoCell
             cell.post = posts[indexPath.item]
