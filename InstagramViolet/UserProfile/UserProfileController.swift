@@ -62,7 +62,6 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
         if self.posts.count > 0 {
             let value = self.posts.last?.creationDate.timeIntervalSince1970
             query = query.queryEnding(atValue: value)
-            print("last post id= \(value)")
         }
         
         query.queryLimited(toLast: 4).observeSingleEvent(of: .value) { snapshot in
@@ -79,12 +78,8 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
             allObjects.forEach { snapshot in
                 guard let dictionary = snapshot.value as? [String: Any] else { return }
                 var post = Post(user: user, dictionary: dictionary)
-                post.id = snapshot.key
-                print ("post id = \(post.id!)")
-                //                self.posts.insert(post, at: 0)
                 self.posts.append(post)
             }
-            
             self.collectionView.reloadData()
         } withCancel: { err in
             print("Failed to fetch posts: \(err)")
