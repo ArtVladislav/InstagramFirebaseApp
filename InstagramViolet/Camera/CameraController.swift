@@ -62,7 +62,7 @@ class CameraController: UIViewController, AVCapturePhotoCaptureDelegate, UIViewC
         if captureSession.canAddOutput(output) {
             captureSession.addOutput(output)
         }
-        //
+        // setup outputs preview
         let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         previewLayer.frame = view.frame
         previewLayer.frame = view.layer.bounds
