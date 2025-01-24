@@ -133,10 +133,12 @@ class SignUpController: UIViewController, UIImagePickerControllerDelegate, UINav
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
                 print("Error loading image: \(error)")
+                // complition(.failure(error))
                 return
             }
             guard let data = data else { return }
             
+//            complition(.sucsess(data))
             let image = UIImage(data: data)
             
             DispatchQueue.main.async {
