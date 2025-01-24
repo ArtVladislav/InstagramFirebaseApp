@@ -77,7 +77,7 @@ class UserProfileController: UICollectionViewController, UICollectionViewDelegat
             guard let user = self.user else { return }
             allObjects.forEach { snapshot in
                 guard let dictionary = snapshot.value as? [String: Any] else { return }
-                var post = Post(user: user, dictionary: dictionary)
+                let post = Post(user: user, dictionary: dictionary)
                 self.posts.append(post)
             }
             self.collectionView.reloadData()
