@@ -23,3 +23,4 @@ struct Post {
         self.creationDate = Date(timeIntervalSince1970: secondsFrom1970)
     }
 }
+

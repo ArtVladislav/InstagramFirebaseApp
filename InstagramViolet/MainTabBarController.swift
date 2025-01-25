@@ -56,7 +56,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
         //plus
         let plusNavController = templateNavController(unselected: UIImage.plusUnselected, selected: UIImage.plusUnselected)
         //like
-        let likeNavController = templateNavController(unselected: UIImage.likeUnselected, selected: UIImage.likeSelected)
+        let likeNavController = templateNavController(unselected: UIImage.likeUnselected, selected: UIImage.likeSelected, rootViewController: LikesCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout()))
         //user
         let userProfileNavController = templateNavController(unselected: UIImage.profileUnselected, selected: UIImage.profileSelected, rootViewController: UserProfileController(collectionViewLayout: UICollectionViewFlowLayout()))
         
