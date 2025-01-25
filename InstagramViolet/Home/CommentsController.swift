@@ -9,8 +9,6 @@ import UIKit
 import FirebaseDatabase
 import FirebaseAuth
 
-private let reuseIdentifier = "Cell"
-
 class CommentsController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     var currentUser: User?
