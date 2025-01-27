@@ -33,8 +33,19 @@
 		2F154E292CF4EF1000C24AA6 /* FirebaseVertexAI in Frameworks */ = {isa = PBXBuildFile; productRef = 2F154E282CF4EF1000C24AA6 /* FirebaseVertexAI */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		2F539AF62D463BE100120706 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2F154DCB2CF3CD1100C24AA6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2F154DD22CF3CD1100C24AA6;
+			remoteInfo = InstagramViolet;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		2F154DD32CF3CD1100C24AA6 /* InstagramViolet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InstagramViolet.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2F539AF22D463BE000120706 /* InstagramVioletTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InstagramVioletTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -54,6 +65,11 @@
 				2F154DE52CF3CD1200C24AA6 /* Exceptions for "InstagramViolet" folder in "InstagramViolet" target */,
 			);
 			path = InstagramViolet;
+			sourceTree = "<group>";
+		};
+		2F539AF32D463BE000120706 /* InstagramVioletTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = InstagramVioletTests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -90,6 +106,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2F539AEF2D463BE000120706 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -97,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				2F154DD52CF3CD1100C24AA6 /* InstagramViolet */,
+				2F539AF32D463BE000120706 /* InstagramVioletTests */,
 				2F154DD42CF3CD1100C24AA6 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -105,6 +129,7 @@
 			isa = PBXGroup;
 			children = (
 				2F154DD32CF3CD1100C24AA6 /* InstagramViolet.app */,
+				2F539AF22D463BE000120706 /* InstagramVioletTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -158,6 +183,29 @@
 			productReference = 2F154DD32CF3CD1100C24AA6 /* InstagramViolet.app */;
 			productType = "com.apple.product-type.application";
 		};
+		2F539AF12D463BE000120706 /* InstagramVioletTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2F539AF82D463BE100120706 /* Build configuration list for PBXNativeTarget "InstagramVioletTests" */;
+			buildPhases = (
+				2F539AEE2D463BE000120706 /* Sources */,
+				2F539AEF2D463BE000120706 /* Frameworks */,
+				2F539AF02D463BE000120706 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2F539AF72D463BE100120706 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				2F539AF32D463BE000120706 /* InstagramVioletTests */,
+			);
+			name = InstagramVioletTests;
+			packageProductDependencies = (
+			);
+			productName = InstagramVioletTests;
+			productReference = 2F539AF22D463BE000120706 /* InstagramVioletTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -165,11 +213,15 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1610;
+				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1610;
 				TargetAttributes = {
 					2F154DD22CF3CD1100C24AA6 = {
 						CreatedOnToolsVersion = 16.1;
+					};
+					2F539AF12D463BE000120706 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 2F154DD22CF3CD1100C24AA6;
 					};
 				};
 			};
@@ -191,12 +243,20 @@
 			projectRoot = "";
 			targets = (
 				2F154DD22CF3CD1100C24AA6 /* InstagramViolet */,
+				2F539AF12D463BE000120706 /* InstagramVioletTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		2F154DD12CF3CD1100C24AA6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2F539AF02D463BE000120706 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -213,7 +273,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2F539AEE2D463BE000120706 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2F539AF72D463BE100120706 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2F154DD22CF3CD1100C24AA6 /* InstagramViolet */;
+			targetProxy = 2F539AF62D463BE100120706 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		2F154DE72CF3CD1200C24AA6 /* Debug */ = {
@@ -391,6 +466,44 @@
 			};
 			name = Release;
 		};
+		2F539AF92D463BE100120706 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = BXKN4K78G6;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Vladislav.InstagramVioletTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/InstagramViolet.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/InstagramViolet";
+			};
+			name = Debug;
+		};
+		2F539AFA2D463BE100120706 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = BXKN4K78G6;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Vladislav.InstagramVioletTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/InstagramViolet.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/InstagramViolet";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -408,6 +521,15 @@
 			buildConfigurations = (
 				2F154DE72CF3CD1200C24AA6 /* Debug */,
 				2F154DE82CF3CD1200C24AA6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2F539AF82D463BE100120706 /* Build configuration list for PBXNativeTarget "InstagramVioletTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2F539AF92D463BE100120706 /* Debug */,
+				2F539AFA2D463BE100120706 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

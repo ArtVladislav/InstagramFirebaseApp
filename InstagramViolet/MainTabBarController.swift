@@ -32,7 +32,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        view.backgroundColor = .clear
         self.delegate = self
         
         if Auth.auth().currentUser == nil {
@@ -56,7 +56,8 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
         //plus
         let plusNavController = templateNavController(unselected: UIImage.plusUnselected, selected: UIImage.plusUnselected)
         //like
-        let likeNavController = templateNavController(unselected: UIImage.likeUnselected, selected: UIImage.likeSelected, rootViewController: LikesCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout()))
+//        let likeNavController = templateNavController(unselected: UIImage.likeUnselected, selected: UIImage.likeSelected, rootViewController: LikedCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout()))
+        let likeNavController = templateNavController(unselected: UIImage.likeUnselected, selected: UIImage.likeSelected, rootViewController: ModuleBuilder.createLikedPosts())
         //user
         let userProfileNavController = templateNavController(unselected: UIImage.profileUnselected, selected: UIImage.profileSelected, rootViewController: UserProfileController(collectionViewLayout: UICollectionViewFlowLayout()))
         
