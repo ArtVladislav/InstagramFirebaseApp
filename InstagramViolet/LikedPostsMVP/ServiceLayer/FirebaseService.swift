@@ -30,9 +30,8 @@ class FirebaseService: FirebaseServiceProtocol {
     
     func fetchPostsWithUser(completion: @escaping (Result<[LikedPost]?, any Error>) -> Void) {
         fetchUser { user in
-          //  Database.database().reference().child(<#T##pathString: String##String#>)
+            //  Database.database().reference()
         }
         
     }
-    
 }
