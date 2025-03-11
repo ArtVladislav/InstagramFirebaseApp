@@ -146,4 +146,10 @@ final class HomePostCell: UICollectionViewCell {
     @objc func handleLike() {
         delegate?.didLike(for: self)
     }
+    
+//    override func prepareForReuse() {
+//        super.prepareForReuse()
+//        // Сбросьте текст и состояние UI
+//        photoImageView = CustomImageView()
+//    }
 }

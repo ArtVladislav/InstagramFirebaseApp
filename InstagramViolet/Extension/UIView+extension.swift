@@ -51,7 +51,7 @@ extension Date {
         let hour = 60 * minute
         let day = 24 * hour
         let week = 7 * day
-        let month = 4 * week
+        let month = 30 * day
         let year = 12 * month
         
         let quotient: Int
@@ -71,7 +71,7 @@ extension Date {
         } else if secondsAgo < month {
             quotient = secondsAgo / week
             unit = "week"
-        } else if secondsAgo < month {
+        } else if secondsAgo < year {
             quotient = secondsAgo / month
             unit = "month"
         } else {

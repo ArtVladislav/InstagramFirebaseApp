@@ -155,6 +155,11 @@ class CommentsController: UICollectionViewController, UICollectionViewDelegateFl
         }
     }
     
+    //TODO: Используй загрузку данных здесь
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        //
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard let uid = self.currentUser?.uid else { return CGSize(width: view.frame.width, height: 90)}
         let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
