@@ -109,6 +109,11 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         }
         return cell
     }
+    
+    //TODO: use this
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        //
+    }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 5
