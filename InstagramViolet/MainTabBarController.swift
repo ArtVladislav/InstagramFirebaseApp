@@ -56,8 +56,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
         //plus
         let plusNavController = templateNavController(unselected: UIImage.plusUnselected, selected: UIImage.plusUnselected)
         //like
-//        let likeNavController = templateNavController(unselected: UIImage.likeUnselected, selected: UIImage.likeSelected, rootViewController: LikedCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout()))
-        let likeNavController = templateNavController(unselected: UIImage.likeUnselected, selected: UIImage.likeSelected, rootViewController: ModuleBuilder.createLikedPosts())
+        let likeNavController = templateNavController(unselected: UIImage.likeUnselected, selected: UIImage.likeSelected, rootViewController: UICollectionViewController(collectionViewLayout: UICollectionViewFlowLayout()))
         //user
         let userProfileNavController = templateNavController(unselected: UIImage.profileUnselected, selected: UIImage.profileSelected, rootViewController: UserProfileController(collectionViewLayout: UICollectionViewFlowLayout()))
         
